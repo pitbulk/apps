@@ -42,7 +42,10 @@ if(OCP\Config::getUserValue(OCP\USER::getUser(), 'calendar', 'currentview', 'mon
 if(OCP\Config::getUserValue(OCP\USER::getUser(), 'calendar', 'currentview', 'month') == "listview"){
 	OCP\Config::setUserValue(OCP\USER::getUser(), "calendar", "currentview", "list");
 }
-
+$firstDay = (OCP\Config::getUserValue(OCP\USER::getUser(), 'calendar', 'firstday', 'mo') == 'mo' ? '1' : '0');
+$defaultView = OCP\Config::getUserValue(OCP\USER::getUser(), 'calendar', 'currentview', 'month');
+$agendatime = ((int) OCP\Config::getUserValue(OCP\USER::getUser(), 'calendar', 'timeformat', '24') == 24 ? 'HH:mm' : 'hh:mm tt') .  '{ - ' . ((int) OCP\Config::getUserValue(OCP\USER::getUser(), 'calendar', 'timeformat', '24') == 24 ? 'HH:mm' : 'hh:mm tt') .  '}';
+$defaulttime = ((int) OCP\Config::getUserValue(OCP\USER::getUser(), 'calendar', 'timeformat', '24') == 24 ? 'HH:mm' : 'hh:mm tt');
 OCP\Util::addscript('3rdparty/fullcalendar', 'fullcalendar');
 OCP\Util::addStyle('3rdparty/fullcalendar', 'fullcalendar');
 OCP\Util::addscript('3rdparty/timepicker', 'jquery.ui.timepicker');
@@ -51,6 +54,8 @@ if(OCP\Config::getUserValue(OCP\USER::getUser(), "calendar", "timezone") == null
 	OCP\Util::addscript('calendar', 'geo');
 }
 OCP\Util::addscript('calendar', 'calendar');
+OCP\Util::addscript('calendar', 'listview');
+OCP\Util::addscript('calendar', 'init');
 OCP\Util::addStyle('calendar', 'style');
 OCP\Util::addscript('', 'jquery.multiselect');
 OCP\Util::addStyle('', 'jquery.multiselect');
@@ -60,6 +65,10 @@ OCP\App::setActiveNavigationEntry('calendar_index');
 $tmpl = new OCP\Template('calendar', 'calendar', 'user');
 $tmpl->assign('eventSources', $eventSources,false);
 $tmpl->assign('categories', $categories);
+$tmpl->assign('firstDay', $firstDay);
+$tmpl->assign('defaultView', $defaultView);
+$tmpl->assign('agendatime', $agendatime);
+$tmpl->assign('defaulttime', $defaulttime);
 if(array_key_exists('showevent', $_GET)){
 	$tmpl->assign('showevent', $_GET['showevent'], false);
 }
