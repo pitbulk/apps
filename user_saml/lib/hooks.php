@@ -59,6 +59,7 @@ class OC_USER_SAML_Hooks {
 						OC_User::createUser($uid, $random_password);
 
 						if(OC_User::userExists($uid)) {
+							OC_Util::setupFS($uid);
 							if (isset($saml_email)) {
 								update_mail($uid, $saml_email);
 
