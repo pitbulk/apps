@@ -59,6 +59,7 @@ class OC_USER_SAML_Hooks {
 						OC_User::createUser($uid, $random_password);
 
 						if(OC_User::userExists($uid)) {
+							OC_Util::setupFS($uid);
 							if (isset($saml_email)) {
 								update_mail($uid, $saml_email);
 
@@ -142,6 +143,7 @@ function random_password()
 	$valid_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 	$length = 20;
 	$num_valid_chars = strlen($valid_chars);
+	$random_string = "";
 
 	for ($i = 0; $i < $length; $i++) {
 		$random_pick = mt_rand(1, $num_valid_chars);
